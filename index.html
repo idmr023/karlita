@@ -1,147 +1,189 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<<<<<<< HEAD
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karla Paola Fest - Mis Dulces 16</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0A0A0C;
-            --indigo-dark: #2D2554;
-            --neon-purple: #9B5DE5;
-            --pastel-lilac: #DAB6FC;
-            --pure-white: #FFFFFF;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karla Paola Fest - Mis Dulces 16</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0A0A0C;
+            --indigo-dark: #2D2554;
+            --neon-purple: #9B5DE5;
+            --pastel-lilac: #DAB6FC;
+            --pure-white: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: repeating-linear-gradient(45deg, #0f0f12, #0f0f12 10px, #0a0a0c 10px, #0a0a0c 20px);
+            color: var(--pure-white);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container { max-width: 500px; width: 100%; position: relative; }
+
+        /* Logo */
+        .logo {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        /* Estilos de Bloques */
+        .title { font-family: 'Cinzel', serif; font-size: 3.5rem; color: white; text-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--neon-purple); margin: 0; }
+        .cursive { font-family: 'Great Vibes', cursive; color: var(--indigo-dark); font-size: 2.5rem; }
+        .block-4 { font-family: 'Cinzel', serif; font-weight: bold; font-size: 1.5rem; margin: 20px 0; }
+        .small-text { font-size: 0.9rem; letter-spacing: 1px; }
+
+        /* Decoración */
+        .bunting { margin-bottom: 20px; color: var(--pastel-lilac); font-size: 2rem; }
+        
+        .btn {
+            background-color: var(--neon-purple); color: var(--pure-white);
+            padding: 12px 20px; border: none;
+            border-radius: 50px; text-transform: uppercase;
+            font-weight: bold; cursor: pointer; margin: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .share-btn { background-color: var(--pastel-lilac); color: var(--indigo-dark); }
+        .map-btn { background-color: var(--pure-white); color: var(--indigo-dark); }
+
+        
+        .purchased {
+            text-decoration: line-through;
+            opacity: 0.6;
         }
 
-        body {
-            background-color: var(--bg-color);
-            background-image: repeating-linear-gradient(45deg, #0f0f12, #0f0f12 10px, #0a0a0c 10px, #0a0a0c 20px);
-            color: var(--pure-white);
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-
-        .container { max-width: 500px; width: 100%; position: relative; }
-
-        /* Estilos de Bloques */
-        .title { font-family: 'Cinzel', serif; font-size: 3.5rem; color: white; text-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--neon-purple); margin: 0; }
-        .cursive { font-family: 'Great Vibes', cursive; color: var(--indigo-dark); font-size: 2.5rem; }
-        .block-4 { font-family: 'Cinzel', serif; font-weight: bold; font-size: 1.5rem; margin: 20px 0; }
-        .small-text { font-size: 0.9rem; letter-spacing: 1px; }
-
-        /* Decoración */
-        .bunting { margin-bottom: 20px; color: var(--pastel-lilac); font-size: 2rem; }
-        
-        .btn {
-            background-color: var(--neon-purple); color: var(--pure-white);
-            padding: 12px 20px; border: none;
-            border-radius: 50px; text-transform: uppercase;
-            font-weight: bold; cursor: pointer; margin: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        .share-btn { background-color: var(--pastel-lilac); color: var(--indigo-dark); }
-        .map-btn { background-color: var(--pure-white); color: var(--indigo-dark); }
-
-        
-        /* Modal (Corrección: ahora sí tiene display:none por defecto) */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); z-index: 1000; }
-        .modal-content { 
-            background: rgba(45, 37, 84, 0.95); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; 
-            border: 2px solid var(--neon-purple); color: white; font-family: 'Montserrat', sans-serif;
-        }
-
-        .volume-control {
-            margin-top: 15px;
-            color: var(--pure-white);
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <div class="bunting">▼▼▼▼▼▼▼</div>
-        <h1 class="title">Karla Paola<br>Fest</h1>
-        <div class="cursive">Mis dulces</div>
-        <div class="title" style="font-size: 2rem;">16</div>
-        <p class="small-text" style="margin-top: 30px;">TE INVITO A CELEBRAR<br>MI CUMPLEAÑOS</p>
-        <div class="block-4">
-            SÁBADO 26 DE SEPTIEMBRE<br>
-            7:00PM (HORA EXACTA)
-        </div>
-        <p class="small-text">CALLE SANTA PAULA 177 DPTO 201<br>URBANIZACIÓN PANDO<br>CERCADO DE LIMA</p>
-        <div style="margin-top: 30px;">
-            <button id="giftBtn" class="btn">Regalos</button>
-            <button id="playBtn" class="btn">Música 🎵</button>
-            <a href="https://maps.app.goo.gl/TktK8CvgUYUsy2NP7" target="_blank" class="btn map-btn">Ver Mapa 📍</a>
-            <button onclick="shareInvite()" class="btn share-btn">Compartir 📤</button>
-            <div class="volume-control">
-                Volumen: <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.65">
-            </div>
-        </div>
-    </div>
-
-    <div id="giftModal" class="modal">
-        <div class="modal-content">
-            <h3>Lista de Regalos</h3>
-            <input type="text" id="giftInput" placeholder="Nuevo regalo..." style="width:100%; padding:10px; border-radius:10px; border:none; margin-bottom:10px;">
-            <button class="btn" onclick="addGift()">Añadir</button>
-            <ul id="giftList"></ul>
-            <button class="btn" style="background:#333;" onclick="closeModal()">Cerrar</button>
-        </div>
-    </div>
-
-    <script>
-        const audio = new Audio('musica.mp3');
-        audio.volume = 0.65; // Volumen inicial
-        
-        const playBtn = document.getElementById('playBtn');
-        playBtn.onclick = () => {
-            if (audio.paused) { audio.play(); playBtn.textContent = 'Pausar ⏸️'; }
-            else { audio.pause(); playBtn.textContent = 'Música 🎵'; }
-        };
-
-        const volumeSlider = document.getElementById('volumeSlider');
-        volumeSlider.oninput = (e) => { audio.volume = e.target.value; };
-
-        const modal = document.getElementById('giftModal');
-        document.getElementById('giftBtn').onclick = () => modal.style.display = 'flex';
-        function closeModal() { modal.style.display = 'none'; }
-        function addGift() {
-            const input = document.getElementById('giftInput');
-            const list = document.getElementById('giftList');
-            if(input.value) {
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${input.value}</span> <button class="btn" style="padding:5px 10px;" onclick="togglePurchased(this)">✔️</button>`;
-                list.appendChild(li);
-                input.value = '';
-            }
-        }
-        function togglePurchased(btn) { btn.parentElement.classList.toggle('purchased'); }
-
-        function shareInvite() {
-            const text = "¡Hola! Estás invitado al Karla Paola Fest - Mis Dulces 16. ¡Será una noche alucinante y llena de magia neón! 💜✨ Te espero aquí: " + window.location.href;
-            if (navigator.share) {
-                navigator.share({ title: 'Karla Paola Fest', text: text });
-            } else {
-                navigator.clipboard.writeText(text);
-                alert("Invitación copiada al portapapeles. ¡Compártela con tus amigos!");
-            }
-        }
-    </script>
-=======
-
->>>>>>> origin/main
-</body>
+        /* Modal (Corrección: ahora sí tiene display:none por defecto) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); z-index: 1000; }
+        .modal-content { 
+            background: rgba(45, 37, 84, 0.95); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; 
+            border: 2px solid var(--neon-purple); color: white; font-family: 'Montserrat', sans-serif;
+        }
+
+        .volume-control {
+            margin-top: 15px;
+            color: var(--pure-white);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="bunting">▼▼▼▼▼▼▼</div>
+        <img src="logo_karla.jpg" alt="Logo Karla" class="logo">
+        <h1 class="title">Karla Paola<br>Fest</h1>
+        <div class="cursive">Mis dulces</div>
+        <div class="title" style="font-size: 2rem;">16</div>
+        <p class="small-text" style="margin-top: 30px;">TE INVITO A CELEBRAR<br>MI CUMPLEAÑOS</p>
+        <div class="block-4">
+            SÁBADO 26 DE SEPTIEMBRE<br>
+            6:00PM (HORA EXACTA)
+        </div>
+        <p class="small-text">CALLE SANTA PAULA 177 DPTO 201<br>URBANIZACIÓN PANDO<br>CERCADO DE LIMA</p>
+        <div style="margin-top: 30px;">
+            <button id="giftBtn" class="btn">Regalos</button>
+            <button id="playBtn" class="btn">Música 🎵</button>
+            <a href="https://maps.app.goo.gl/TktK8CvgUYUsy2NP7" target="_blank" class="btn map-btn">Ver Mapa 📍</a>
+            <button onclick="shareInvite()" class="btn share-btn">Compartir 📤</button>
+            <div class="volume-control">
+                Volumen: <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.65">
+            </div>
+        </div>
+    </div>
+
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <h3>Lista de Regalos</h3>
+            <input type="text" id="giftInput" placeholder="Nuevo regalo..." style="width:100%; padding:10px; border-radius:10px; border:none; margin-bottom:10px;">
+            <button class="btn" onclick="addGift()">Añadir</button>
+            <ul id="giftList"></ul>
+            <button class="btn" style="background:#333;" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        const audio = new Audio('musica.mp3');
+        audio.volume = 0.65; // Volumen inicial
+
+        const playBtn = document.getElementById('playBtn');
+        playBtn.onclick = () => {
+            if (audio.paused) { audio.play(); playBtn.textContent = 'Pausar ⏸️'; }
+            else { audio.pause(); playBtn.textContent = 'Música 🎵'; }
+        };
+
+        const volumeSlider = document.getElementById('volumeSlider');
+        volumeSlider.oninput = (e) => { audio.volume = e.target.value; };
+
+        const modal = document.getElementById('giftModal');
+        document.getElementById('giftBtn').onclick = () => modal.style.display = 'flex';
+        function closeModal() { modal.style.display = 'none'; }
+
+        let gifts = JSON.parse(localStorage.getItem('gifts')) || [];
+
+        function addGift() {
+            const input = document.getElementById('giftInput');
+            const list = document.getElementById('giftList');
+            if(input.value) {
+                const newGift = { text: input.value, purchased: false };
+                gifts.push(newGift);
+                localStorage.setItem('gifts', JSON.stringify(gifts));
+
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${newGift.text}</span> <button class="btn" style="padding:5px 10px;" onclick="togglePurchased(this)">✔️</button>`;
+                list.appendChild(li);
+                input.value = '';
+            }
+        }
+
+        function togglePurchased(btn) {
+            const li = btn.parentElement;
+            const span = li.querySelector('span');
+            const giftText = span.textContent;
+            
+            const giftIndex = gifts.findIndex(g => g.text === giftText);
+            if (giftIndex !== -1) {
+                gifts[giftIndex].purchased = !gifts[giftIndex].purchased;
+                localStorage.setItem('gifts', JSON.stringify(gifts));
+                span.classList.toggle('purchased', gifts[giftIndex].purchased);
+            }
+        }
+
+        function loadGifts() {
+            const list = document.getElementById('giftList');
+            list.innerHTML = '';
+            gifts.forEach(gift => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="${gift.purchased ? 'purchased' : ''}">${gift.text}</span> <button class="btn" style="padding:5px 10px;" onclick="togglePurchased(this)">✔️</button>`;
+                list.appendChild(li);
+            });
+        }
+
+        function shareInvite() {
+            const text = "¡Hola! Estás invitado al Karla Paola Fest - Mis Dulces 16. ¡Será una noche alucinante y llena de magia neón! 💜✨ Te espero aquí: " + window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'Karla Paola Fest', text: text });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert("Invitación copiada al portapapeles. ¡Compártela con tus amigos!");
+            }
+        }
+
+        loadGifts();
+    </script>
+</body>
 </html>
