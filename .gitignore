@@ -2,6 +2,8 @@ node_modules/
 service-account-key.json
 upload_images.js
 init_firestore.js
+update_firestore.js
+list_storage.js
 package.json
 package-lock.json
 .env

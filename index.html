@@ -368,6 +368,18 @@
 
 
 
+        function syncImagesFromProducts(gifts) {
+            if (!products.length) return gifts;
+            const productMap = {};
+            products.forEach(p => { productMap[p.nombre] = p.imagen; });
+            return gifts.map(g => {
+                if (productMap[g.nombre] && (!g.imagen || g.imagen.includes('/o/productos/') && !g.imagen.includes('%2F'))) {
+                    return { ...g, imagen: productMap[g.nombre] };
+                }
+                return g;
+            });
+        }
+
         async function initializeGifts() {
             await loadProducts();
 
@@ -377,7 +389,7 @@
                     .onSnapshot(async doc => {
                         const data = doc.data();
                         if (data && data.gifts) {
-                            renderGifts(data.gifts);
+                            renderGifts(syncImagesFromProducts(data.gifts));
                         } else {
                             // Si aún no hay datos, inicializar con productos
                             const initialGifts = products.map(p => ({
