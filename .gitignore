@@ -1,0 +1,15 @@
+node_modules/
+service-account-key.json
+upload_images.js
+init_firestore.js
+package.json
+package-lock.json
+.env
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+dist/
+build/
+node_modules/

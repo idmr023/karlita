@@ -12,6 +12,9 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
     <style>
 
         :root {
@@ -155,6 +158,72 @@
 
         }
 
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px 0;
+            margin: 15px 0;
+        }
+
+        .gift-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .gift-card:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.02);
+        }
+
+        .gift-card.taken {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        .gift-card.taken .gift-name {
+            text-decoration: line-through;
+        }
+
+        .gift-card.taken::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: #4CAF50;
+            text-shadow: 0 0 10px #4CAF50;
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .gift-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+
+        .loading-text {
+            text-align: center;
+            padding: 20px;
+            color: var(--pastel-lilac);
+        }
+
     </style>
 
 </head>
@@ -215,11 +284,9 @@
 
             <h3>Lista de Regalos</h3>
 
-            <input type="text" id="giftInput" placeholder="Nuevo regalo..." style="width:100%; padding:10px; border-radius:10px; border:none; margin-bottom:10px;">
+            <p style="font-size: 0.8rem; color: #DAB6FC; margin-bottom: 10px;">Toca un regalo para marcarlo como elegido</p>
 
-            <button class="btn" onclick="addGift()">Añadir</button>
-
-            <ul id="giftList"></ul>
+            <ul id="giftList" style="list-style: none; padding: 0;"></ul>
 
             <button class="btn" style="background:#333;" onclick="closeModal()">Cerrar</button>
 
@@ -228,6 +295,25 @@
     </div>
 
 
+
+<!-- Firebase config -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAW1i-Be2FAxRGlbkdurg9_kBJoY_7tioY",
+            authDomain: "cumplekarla-ba6cf.firebaseapp.com",
+            projectId: "cumplekarla-ba6cf",
+            storageBucket: "cumplekarla-ba6cf.firebasestorage.app",
+            messagingSenderId: "1069820457386",
+            appId: "1:1069820457386:web:a210945bdd6ad865dffbd3",
+            measurementId: "G-6XBLZWXQMD"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+    <!-- END CONFIGURACIÓN DE FIREBASE -->
 
     <script>
 
@@ -257,88 +343,91 @@
 
         const modal = document.getElementById('giftModal');
 
-        document.getElementById('giftBtn').onclick = () => modal.style.display = 'flex';
+        document.getElementById('giftBtn').onclick = () => { loadGifts(); modal.style.display = 'flex'; };
 
         function closeModal() { modal.style.display = 'none'; }
 
 
 
-        let gifts = JSON.parse(localStorage.getItem('gifts')) || [];
+        let products = [];
 
-
-
-        function addGift() {
-
-            const input = document.getElementById('giftInput');
-
-            const list = document.getElementById('giftList');
-
-            if(input.value) {
-
-                const newGift = { text: input.value, purchased: false };
-
-                gifts.push(newGift);
-
-                localStorage.setItem('gifts', JSON.stringify(gifts));
-
-
-
-                const li = document.createElement('li');
-
-                li.innerHTML = `<span>${newGift.text}</span> <button class="btn" style="padding:5px 10px;" onclick="togglePurchased(this)">✔️</button>`;
-
-                list.appendChild(li);
-
-                input.value = '';
-
+        async function loadProducts() {
+            try {
+                const response = await fetch('productos.json');
+                products = await response.json();
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                products = [];
             }
-
         }
 
 
 
-        function togglePurchased(btn) {
+        async function initializeGifts() {
+            await loadProducts();
 
-            const li = btn.parentElement;
-
-            const span = li.querySelector('span');
-
-            const giftText = span.textContent;
-
-            
-
-            const giftIndex = gifts.findIndex(g => g.text === giftText);
-
-            if (giftIndex !== -1) {
-
-                gifts[giftIndex].purchased = !gifts[giftIndex].purchased;
-
-                localStorage.setItem('gifts', JSON.stringify(gifts));
-
-                span.classList.toggle('purchased', gifts[giftIndex].purchased);
-
+            if (db) {
+                // Escuchar cambios en tiempo real desde Firestore
+                db.collection('giftList').doc('main')
+                    .onSnapshot(async doc => {
+                        const data = doc.data();
+                        if (data && data.gifts) {
+                            renderGifts(data.gifts);
+                        } else {
+                            // Si aún no hay datos, inicializar con productos
+                            const initialGifts = products.map(p => ({
+                                nombre: p.nombre,
+                                imagen: p.imagen,
+                                taken: false
+                            }));
+                            await db.collection('giftList').doc('main').set({ gifts: initialGifts });
+                        }
+                    });
+            } else {
+                // Fallback: localStorage
+                console.warn('Firebase no está configurado. Usando localStorage.');
+                renderGifts(JSON.parse(localStorage.getItem('gifts')) || products.map(p => ({ ...p, taken: false })));
             }
-
         }
 
 
 
-        function loadGifts() {
-
+        function renderGifts(gifts) {
             const list = document.getElementById('giftList');
-
             list.innerHTML = '';
 
-            gifts.forEach(gift => {
+            if (!gifts.length) {
+                list.innerHTML = '<p class="loading-text">Cargando regalos...</p>';
+                return;
+            }
 
+            gifts.forEach((gift, index) => {
                 const li = document.createElement('li');
 
-                li.innerHTML = `<span class="${gift.purchased ? 'purchased' : ''}">${gift.text}</span> <button class="btn" style="padding:5px 10px;" onclick="togglePurchased(this)">✔️</button>`;
+                li.innerHTML = `
+                    <div class="gift-card ${gift.taken ? 'taken' : ''}" onclick="toggleTaken(${index})">
+                        <img src="${gift.imagen || ''}" alt="${gift.nombre}" class="gift-image" onerror="this.style.display='none'">
+                        <div class="gift-name">${gift.nombre}</div>
+                    </div>
+                `;
 
                 list.appendChild(li);
-
             });
+        }
 
+
+
+        async function toggleTaken(index) {
+            if (!db) return;
+
+            const docRef = db.collection('giftList').doc('main');
+            const doc = await docRef.get();
+
+            if (doc.exists) {
+                const gifts = doc.data().gifts;
+                gifts[index].taken = !gifts[index].taken;
+                await docRef.update({ gifts });
+            }
         }
 
 
@@ -363,7 +452,18 @@
 
 
 
-        loadGifts();
+        // Initialize
+        if (db) {
+            initializeGifts();
+        } else {
+            loadProducts().then(() => renderGifts(products.map(p => ({ ...p, taken: false }))));
+        }
+
+        // Compatibility: cargar al abrir el modal
+        async function loadGifts() {
+            const list = document.getElementById('giftList');
+            list.innerHTML = '<p class="loading-text">Cargando regalos...</p>';
+        }
 
     </script>
 
