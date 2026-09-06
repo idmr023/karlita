@@ -423,7 +423,7 @@
 
                 li.innerHTML = `
                     <div class="gift-card ${gift.taken ? 'taken' : ''}" onclick="toggleTaken(${index})">
-                        <img src="${gift.imagen || ''}" alt="${gift.nombre}" class="gift-image" crossorigin="anonymous" onerror="this.style.display='none'">
+                        <img src="${gift.imagen || ''}" alt="${gift.nombre}" class="gift-image" loading="lazy" onerror="this.style.display='none'">
                         <div class="gift-name">${gift.nombre}</div>
                     </div>
                 `;
