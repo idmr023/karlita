@@ -349,7 +349,7 @@
 
         const modal = document.getElementById('giftModal');
 
-        document.getElementById('giftBtn').onclick = () => { loadGifts(); modal.style.display = 'flex'; };
+        document.getElementById('giftBtn').onclick = () => { modal.style.display = 'flex'; };
 
         function closeModal() { modal.style.display = 'none'; }
 
@@ -416,6 +416,15 @@
 
         function renderGifts(gifts) {
             const list = document.getElementById('giftList');
+
+            if (!list._delegationAttached) {
+                list.addEventListener('click', (e) => {
+                    const card = e.target.closest('.gift-card');
+                    if (card) toggleTakenByName(card.dataset.nombre);
+                });
+                list._delegationAttached = true;
+            }
+
             list.innerHTML = '';
 
             if (!gifts.length) {
@@ -423,11 +432,11 @@
                 return;
             }
 
-            gifts.forEach((gift, index) => {
+            gifts.forEach(gift => {
                 const li = document.createElement('li');
 
                 li.innerHTML = `
-                    <div class="gift-card ${gift.taken ? 'taken' : ''}" onclick="toggleTaken(${index})">
+                    <div class="gift-card ${gift.taken ? 'taken' : ''}" data-nombre="${gift.nombre}">
                         <img src="${gift.imagen || ''}" alt="${gift.nombre}" class="gift-image" loading="lazy" onerror="this.style.display='none'">
                         <div class="gift-name">${gift.nombre}</div>
                     </div>
@@ -439,15 +448,17 @@
 
 
 
-        async function toggleTaken(index) {
+        async function toggleTakenByName(nombre) {
             if (!db) return;
 
             const docRef = db.collection('giftList').doc('main');
             const doc = await docRef.get();
 
             if (doc.exists) {
-                const gifts = doc.data().gifts;
-                gifts[index].taken = !gifts[index].taken;
+                const gifts = doc.data().gifts.map(g => ({ ...g }));
+                const idx = gifts.findIndex(g => g.nombre === nombre);
+                if (idx === -1) return;
+                gifts[idx].taken = !gifts[idx].taken;
                 await docRef.update({ gifts });
             }
         }
@@ -479,14 +490,6 @@
             initializeGifts();
         } else {
             loadProducts().then(() => renderGifts(products.map(p => ({ ...p, taken: false }))));
-        }
-
-        // Compatibility: cargar al abrir el modal
-        async function loadGifts() {
-            const list = document.getElementById('giftList');
-            list.innerHTML = '<p class="loading-text">Cargando regalos...</p>';
-            if (!products.length) await loadProducts();
-            renderGifts(products.map(p => ({ ...p, taken: false })));
         }
 
     </script>
